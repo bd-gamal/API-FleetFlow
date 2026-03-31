@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,11 +14,11 @@ public class Clientdto {
     private  String nom;
     private String ville;
 
-    public static Clientdto toDto(Client entity){
-        return Clientdto.builder()
-                .id(entity.getId())
-                .nom(entity.getNom())
-                .ville(entity.getVille())
-                .build();
-    }
+//    public static Clientdto toDto(Client entity){
+//        return Clientdto.builder()
+//                .id(entity.getId())
+//                .nom(entity.getNom())
+//                .ville(entity.getVille())
+//                .build();
+//    }
 }
