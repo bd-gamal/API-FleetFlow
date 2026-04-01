@@ -49,4 +49,6 @@ public class CLientController {
         List<Clientdto> clients= clientService.getAllClient();
         return  ResponseEntity.ok(clients);
     }
+
+
 }

@@ -39,6 +39,7 @@ public class ClientService {
     public List<Clientdto> getAllClient(){
         List<Client> clients = clientRepo.findAll();
                 return clients.stream().map(clientMapper::toDTO).toList();
+
     }
 
 }
