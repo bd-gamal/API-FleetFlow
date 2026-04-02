@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface LivraisonRepo extends JpaRepository<Livraison, Long> {
+
 @Query("select d from Livraison d where d.dateLivraison between :start and :end")
 List<Livraison> findByDateLivraisonBetween(@Param("start") LocalDate start,@Param("end") LocalDate end);
 
