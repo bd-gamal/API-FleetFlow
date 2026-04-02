@@ -1,5 +1,6 @@
 package com.fleetflow.controller;
 
+import com.fleetflow.dto.ClientRequestDto;
 import com.fleetflow.dto.Clientdto;
 import com.fleetflow.entity.Client;
 import com.fleetflow.service.ClientService;
@@ -16,13 +17,13 @@ public class CLientController {
     private  final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<Clientdto> createClient( @RequestBody Clientdto client){
+    public ResponseEntity<ClientRequestDto> createClient(@RequestBody ClientRequestDto client){
         Clientdto create= clientService.addClient(client);
         return  ResponseEntity.ok(client);
     }
 
     @PutMapping("{id}")
-    public  ResponseEntity<Clientdto> updateClient(@PathVariable Long id,@RequestBody Clientdto client){
+    public  ResponseEntity<Clientdto> updateClient(@PathVariable Long id,@RequestBody ClientRequestDto client){
         Clientdto updateClient= clientService.updateClient(id,client);
         return  ResponseEntity.ok(updateClient);
     }

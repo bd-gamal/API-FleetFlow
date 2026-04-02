@@ -5,6 +5,8 @@ import com.fleetflow.entity.Livraison;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface LivraisonMapper {
     @Mapping(source = "client.id",target = "clientId")
@@ -13,4 +15,5 @@ public interface LivraisonMapper {
     @Mapping(source ="clientId",target ="client.id")
     Livraison toEntity(Livraisondto livraisondto);
 
+    List<Livraisondto> toDto(List<Livraison>livraisons);
 }

@@ -5,17 +5,17 @@ import com.fleetflow.entity.Livraison;
 import com.fleetflow.entity.StatusLivraison;
 import com.fleetflow.mapper.LivraisonMapper;
 import com.fleetflow.repository.LivraisonRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class LivraisonService {
     private final LivraisonMapper livraisonMapper;
     private  final LivraisonRepo livraisonRepo;
 
-    public LivraisonService(LivraisonMapper livraisonMapper, LivraisonRepo livraisonRepo){
-        this.livraisonRepo=livraisonRepo;
-        this.livraisonMapper=livraisonMapper;
-    }
 
     public Livraisondto createLivraison(Livraisondto livraisondto){
         Livraison createLivraison=livraisonMapper.toEntity(livraisondto);
@@ -27,4 +27,10 @@ public class LivraisonService {
     }
 
 
+
+  public List<Livraisondto> getAllLivraison(){
+     List<Livraison> livraisons = livraisonRepo.findAll();
+     //return livraisons.stream().map(livraisonMapper::toDto).toList();
+     return livraisonMapper.toDto(livraisons);
+  }
 }
