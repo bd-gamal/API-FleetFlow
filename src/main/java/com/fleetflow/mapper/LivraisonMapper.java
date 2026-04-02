@@ -1,6 +1,7 @@
 package com.fleetflow.mapper;
 
 import com.fleetflow.dto.LivraisonRequestDTO;
+import com.fleetflow.dto.LivraisonResponseDTO;
 import com.fleetflow.entity.Livraison;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,5 +18,5 @@ public interface LivraisonMapper {
     @Mapping(source ="clientId", target ="client.id")
     Livraison toEntity(LivraisonRequestDTO dto);
 
-    List<Livraisondto> toDto(List<Livraison>livraisons);
+    List<LivraisonResponseDTO> toDto(List<Livraison>livraisons);
 }

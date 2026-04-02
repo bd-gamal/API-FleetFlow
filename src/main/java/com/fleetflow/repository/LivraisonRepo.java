@@ -10,4 +10,10 @@ import java.util.List;
 
 public interface LivraisonRepo extends JpaRepository<Livraison, Long> {
 @Query("select d from Livraison d where d.dateLivraison between :start and :end")
-List<Livraison> findByDateLivraisonBetween(@Param("start") LocalDate start,@Param("end") LocalDate end);}
+List<Livraison> findByDateLivraisonBetween(@Param("start") LocalDate start,@Param("end") LocalDate end);
+
+    @Query("select l from Livraison l where l.adresseDestination like %:ville%")
+    List<Livraison> findLivraisonsByVilleDestination(@Param("ville") String ville);
+
+}
+
