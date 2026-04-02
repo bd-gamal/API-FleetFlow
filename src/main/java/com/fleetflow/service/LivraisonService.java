@@ -1,10 +1,11 @@
 package com.fleetflow.service;
 
-import com.fleetflow.dto.Livraisondto;
+import com.fleetflow.dto.LivraisonRequestDTO;
 import com.fleetflow.entity.Livraison;
 import com.fleetflow.entity.StatusLivraison;
 import com.fleetflow.mapper.LivraisonMapper;
 import com.fleetflow.repository.LivraisonRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +18,9 @@ public class LivraisonService {
         this.livraisonMapper=livraisonMapper;
     }
 
-    public Livraisondto createLivraison(Livraisondto livraisondto){
-        Livraison createLivraison=livraisonMapper.toEntity(livraisondto);
+    @Transactional
+    public LivraisonRequestDTO createLivraison(LivraisonRequestDTO livraisonRequestDTO){
+        Livraison createLivraison=livraisonMapper.toEntity(livraisonRequestDTO);
         if(createLivraison.getStatusLivraison()== null){
             createLivraison.setStatusLivraison(StatusLivraison.ENATTENTE);
         }
@@ -26,5 +28,10 @@ public class LivraisonService {
         return  livraisonMapper.toDto(saveLivraison);
     }
 
-
+    @Transactional
+    public LivraisonRequestDTO assignerChauffeurEtVehicule(Long livraisonId, Long chauffeurId, Long vehiculeId) {
+        Livraison livraison = livraisonRepo.findById(livraisonId).orElseThrow(() -> new RuntimeException("Livraison n'est pas trouvée"));
+        livraison.setStatusLivraison(StatusLivraison.ENCOURS);
+        return livraisonMapper.toDto(livraisonRepo.save(livraison));
+    }
 }

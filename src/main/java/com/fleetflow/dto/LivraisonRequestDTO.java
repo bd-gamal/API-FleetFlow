@@ -1,6 +1,5 @@
 package com.fleetflow.dto;
 
-import com.fleetflow.entity.Client;
 import com.fleetflow.entity.StatusLivraison;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,11 +10,9 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Livraisondto {
+public class LivraisonRequestDTO {
     private LocalDate dateLivraison;
     private String adresseDepart;
-    private  String adresseDestination;
-    private StatusLivraison statusLivraison;
+    private String adresseDestination;
     private Long clientId;
-
 }
