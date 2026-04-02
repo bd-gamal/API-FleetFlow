@@ -17,7 +17,6 @@ public class Vehicule {
     private String type;
     private int capacite;
     @Enumerated(EnumType.STRING )
-    private StatutVehicule statut;
-
+    private StatutVehicule statut = StatutVehicule.DISPONIBLE;
 }
 

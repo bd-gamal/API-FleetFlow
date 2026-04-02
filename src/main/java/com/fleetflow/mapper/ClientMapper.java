@@ -1,17 +1,19 @@
 package com.fleetflow.mapper;
 
-import ch.qos.logback.core.model.ComponentModel;
-import com.fleetflow.dto.Clientdto;
+import com.fleetflow.dto.ClientRequestDTO;
+import com.fleetflow.dto.ClientResponseDTO;
 import com.fleetflow.entity.Client;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Mapper(componentModel ="spring")
 public interface ClientMapper {
-    Clientdto toDTO(Client client);
-    Client toEntity(Clientdto clientdto);
+    ClientResponseDTO toDTO(Client client);
+    List<ClientResponseDTO> toDto(List<Client> clientList);
+    Client toEntity(ClientRequestDTO clientRequestDto);
 
-    void updateClient(Clientdto clientdto , @MappingTarget Client client);
+    void updateClient(ClientRequestDTO clientRequestDto , @MappingTarget Client client);
 
 }

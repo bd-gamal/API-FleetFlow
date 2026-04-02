@@ -17,4 +17,6 @@ public class LivraisonResponseDTO {
     private String adresseDestination;
     private StatutLivraison statut;
     private Long clientId;
+    private Long vehiculeId;
+    private Long chauffeurId;
 }

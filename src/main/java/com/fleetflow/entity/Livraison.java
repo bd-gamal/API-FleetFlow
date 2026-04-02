@@ -1,17 +1,13 @@
 package com.fleetflow.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "livraisons")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Livraison {
@@ -29,8 +25,17 @@ public class Livraison {
     private String adresseDestination;
 
     @Enumerated(EnumType.STRING)
-    private StatutLivraison statut;
+    private StatutLivraison statut = StatutLivraison.EN_ATTENTE;
 
-    @Column(name = "clients_id")
-    private Long clientId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicule_id")
+    private Vehicule vehicule;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chauffeur_id")
+    private Chauffeur chauffeur;
 }

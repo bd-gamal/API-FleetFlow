@@ -14,6 +14,5 @@ public class LivraisonRequestDTO {
     private LocalDateTime dateLivraison;
     private String adresseDepart;
     private String adresseDestination;
-    private StatutLivraison statut;
     private Long clientId;
 }

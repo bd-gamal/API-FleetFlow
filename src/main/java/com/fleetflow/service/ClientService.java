@@ -1,6 +1,7 @@
 package com.fleetflow.service;
 
-import com.fleetflow.dto.Clientdto;
+import com.fleetflow.dto.ClientRequestDTO;
+import com.fleetflow.dto.ClientResponseDTO;
 import com.fleetflow.entity.Client;
 import com.fleetflow.mapper.ClientMapper;
 import com.fleetflow.repository.ClientRepo;
@@ -8,7 +9,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -19,24 +19,24 @@ public class ClientService {
         this.clientMapper =clientMapper;
     }
 
-     public Clientdto addClient(Clientdto client){
+     public ClientResponseDTO addClient(ClientRequestDTO client){
         Client addClient = clientMapper.toEntity(client);
         Client saveClient =clientRepo.save(addClient);
         return clientMapper.toDTO(saveClient);
      }
-     public Clientdto updateClient(Long id , Clientdto client){
+     public ClientResponseDTO updateClient(Long id , ClientRequestDTO client){
         Client findClient =clientRepo.findById(id).orElseThrow(()->new RuntimeException("not Exist"));
         clientMapper.updateClient(client, findClient);
          Client clientUpdated = clientRepo.save(findClient);
          return  clientMapper.toDTO(clientUpdated);
      }
-    public  Clientdto findById(Long id){
+    public ClientResponseDTO findById(Long id){
         return  clientRepo.findById(id).map(c->clientMapper.toDTO(c)).orElseThrow(()->new EntityNotFoundException("not found"));
     }
     public  void deleteClient( Long id){
         clientRepo.deleteById(id);
     }
-    public List<Clientdto> getAllClient(){
+    public List<ClientResponseDTO> getAllClient(){
         List<Client> clients = clientRepo.findAll();
                 return clients.stream().map(clientMapper::toDTO).toList();
 
