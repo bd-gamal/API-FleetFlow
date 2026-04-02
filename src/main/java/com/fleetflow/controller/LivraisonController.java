@@ -1,6 +1,6 @@
 package com.fleetflow.controller;
 
-import com.fleetflow.dto.Livraisondto;
+import com.fleetflow.dto.LivraisonRequestDTO;
 import com.fleetflow.service.LivraisonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +17,8 @@ public class LivraisonController {
     }
 
     @PostMapping
-    public ResponseEntity<Livraisondto> createLivraion(@RequestBody  Livraisondto livraisondto){
-        Livraisondto livraison = livraisonService.createLivraison(livraisondto);
+    public ResponseEntity<LivraisonRequestDTO> createLivraion(@RequestBody LivraisonRequestDTO livraisonRequestDTO){
+        LivraisonRequestDTO livraison = livraisonService.createLivraison(livraisonRequestDTO);
         return ResponseEntity.ok(livraison);
     }
 }

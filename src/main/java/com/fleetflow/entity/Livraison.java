@@ -1,12 +1,14 @@
 package com.fleetflow.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Data @NoArgsConstructor @AllArgsConstructor
 public class Livraison {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,9 @@ public class Livraison {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+    @ManyToOne
+    @JoinColumn(name = "chauffeur_id")
+    private Chauffeur chauffeur;
     @Enumerated(EnumType.STRING)
-    private StatusLivraison statusLivraison;
+    private StatusLivraison statusLivraison = StatusLivraison.ENATTENTE;
 }
