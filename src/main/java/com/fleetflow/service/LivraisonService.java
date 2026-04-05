@@ -3,15 +3,18 @@ package com.fleetflow.service;
 import com.fleetflow.dto.LivraisonRequestDTO;
 import com.fleetflow.dto.LivraisonResponseDTO;
 import com.fleetflow.dto.LivraisonStatutRequestDTO;
-import com.fleetflow.entity.Livraison;
-import com.fleetflow.entity.StatutLivraison;
+import com.fleetflow.entity.*;
 import com.fleetflow.mapper.LivraisonMapper;
+import com.fleetflow.repository.ChauffeurRepository;
+import com.fleetflow.repository.ClientRepo;
 import com.fleetflow.repository.LivraisonRepo;
+import com.fleetflow.repository.VehiculeRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +24,18 @@ public class LivraisonService {
 
     private final LivraisonRepo repo;
     private final LivraisonMapper mapper;
+    private final ClientRepo clientRepo;
+    private final VehiculeRepo vehiculeRepo;
+    private final ChauffeurRepository chauffeurRepo;
 
     @Transactional
     public LivraisonResponseDTO createLivraison(LivraisonRequestDTO livraisondto){
         Livraison createLivraison=mapper.toEntity(livraisondto);
+        if (livraisondto.getClientId() != null) {
+            Client client = clientRepo.findById(livraisondto.getClientId())
+                    .orElseThrow(() -> new RuntimeException("Client introuvable avec l'ID : " + livraisondto.getClientId()));
+            createLivraison.setClient(client);
+        }
         if(createLivraison.getStatut()== null){
             createLivraison.setStatut(StatutLivraison.EN_ATTENTE);
         }
@@ -59,6 +70,10 @@ public class LivraisonService {
 
     public LivraisonResponseDTO assignerChauffeurEtVehicule(Long livraisonId, Long chauffeurId, Long vehiculeId) {
         Livraison livraison = repo.findById(livraisonId).orElseThrow(() -> new RuntimeException("Livraison n'est pas trouvée"));
+        Chauffeur chauffeur = chauffeurRepo.findById(chauffeurId).orElseThrow(() -> new RuntimeException("Chauffeur introuvable"));
+        Vehicule vehicule = vehiculeRepo.findById(vehiculeId).orElseThrow(() -> new RuntimeException("Véhicule introuvable"));
+        livraison.setVehicule(vehicule);
+        livraison.setChauffeur(chauffeur);
         livraison.setStatut(StatutLivraison.EN_COURS);
         return mapper.toResponseDto(repo.save(livraison));
     }

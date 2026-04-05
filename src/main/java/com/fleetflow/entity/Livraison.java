@@ -3,7 +3,7 @@ package com.fleetflow.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "livraisons")
@@ -16,7 +16,7 @@ public class Livraison {
     private Long id;
 
     @Column(name = "date_livraison")
-    private LocalDateTime dateLivraison;
+    private LocalDate dateLivraison;
 
     @Column(name = "adresse_depart")
     private String adresseDepart;

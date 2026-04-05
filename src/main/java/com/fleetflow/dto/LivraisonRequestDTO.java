@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class LivraisonRequestDTO {
-    private LocalDateTime dateLivraison;
+    private LocalDate dateLivraison;
     private String adresseDepart;
     private String adresseDestination;
     private Long clientId;
