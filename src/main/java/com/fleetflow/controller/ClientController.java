@@ -2,6 +2,7 @@ package com.fleetflow.controller;
 
 import com.fleetflow.dto.ClientRequestDTO;
 import com.fleetflow.dto.ClientResponseDTO;
+import com.fleetflow.dto.Clientdto;
 import com.fleetflow.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,21 +30,15 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ClientResponseDTO getClientById(@PathVariable  Long id){
-        return clientService.findById(id);
+    public ResponseEntity<ClientResponseDTO> getClientById(@PathVariable Long id){
+        return ResponseEntity.ok(clientService.findById(id));
     }
-//    public  ResponseEntity<Clientdto> getClientById(@PathVariable  Long id){
-//        Clientdto client =clientService.findById(id);
-//        return ResponseEntity.ok(client);
-//    }
+
     @DeleteMapping("/{id}")
-    public void deleteClientById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteClientByID(@PathVariable Long id){
         clientService.deleteClient(id);
+        return ResponseEntity.noContent().build();
     }
-//    public ResponseEntity<Void> deleteClientByID(@PathVariable Long id){
-//        clientService.deleteClient(id);
-//        return ResponseEntity.noContent().build();
-//    }
 
     @GetMapping
     public ResponseEntity<List<ClientResponseDTO>> getAllCients(){
