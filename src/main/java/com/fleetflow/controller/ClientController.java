@@ -2,7 +2,6 @@ package com.fleetflow.controller;
 
 import com.fleetflow.dto.ClientRequestDTO;
 import com.fleetflow.dto.ClientResponseDTO;
-import com.fleetflow.dto.Clientdto;
 import com.fleetflow.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -2,24 +2,20 @@ package com.fleetflow.service;
 
 import com.fleetflow.dto.ClientRequestDTO;
 import com.fleetflow.dto.ClientResponseDTO;
-import com.fleetflow.dto.Clientdto;
 import com.fleetflow.entity.Client;
 import com.fleetflow.mapper.ClientMapper;
 import com.fleetflow.repository.ClientRepo;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ClientService {
     private final ClientRepo clientRepo;
     private  final ClientMapper clientMapper;
-    public ClientService(ClientRepo clientRepo, ClientMapper clientMapper){
-        this.clientRepo=clientRepo;
-        this.clientMapper =clientMapper;
-    }
 
      public ClientResponseDTO addClient(ClientRequestDTO client){
         Client addClient = clientMapper.toEntity(client);
