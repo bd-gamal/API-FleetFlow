@@ -1,8 +1,7 @@
 package com.fleetflow.controller;
 
-import com.fleetflow.dto.ClientRequestDto;
-import com.fleetflow.dto.Clientdto;
-import com.fleetflow.entity.Client;
+import com.fleetflow.dto.ClientRequestDTO;
+import com.fleetflow.dto.ClientResponseDTO;
 import com.fleetflow.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,23 +12,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
-public class CLientController {
+public class ClientController {
     private  final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ClientRequestDto> createClient(@RequestBody ClientRequestDto client){
-        Clientdto create= clientService.addClient(client);
+    public ResponseEntity<ClientRequestDTO> createClient(@RequestBody ClientRequestDTO client){
+        ClientResponseDTO create= clientService.addClient(client);
         return  ResponseEntity.ok(client);
     }
 
     @PutMapping("{id}")
-    public  ResponseEntity<Clientdto> updateClient(@PathVariable Long id,@RequestBody ClientRequestDto client){
-        Clientdto updateClient= clientService.updateClient(id,client);
+    public  ResponseEntity<ClientResponseDTO> updateClient(@PathVariable Long id, @RequestBody ClientRequestDTO client){
+        ClientResponseDTO updateClient= clientService.updateClient(id,client);
         return  ResponseEntity.ok(updateClient);
     }
 
     @GetMapping("/{id}")
-    public  Clientdto getClientById(@PathVariable  Long id){
+    public ClientResponseDTO getClientById(@PathVariable  Long id){
         return clientService.findById(id);
     }
 //    public  ResponseEntity<Clientdto> getClientById(@PathVariable  Long id){
@@ -46,10 +45,8 @@ public class CLientController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<Clientdto>> getAllCients(){
-        List<Clientdto> clients= clientService.getAllClient();
+    public ResponseEntity<List<ClientResponseDTO>> getAllCients(){
+        List<ClientResponseDTO> clients= clientService.getAllClient();
         return  ResponseEntity.ok(clients);
     }
-
-
 }

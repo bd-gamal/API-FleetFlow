@@ -1,27 +1,41 @@
 package com.fleetflow.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor
+@Table(name = "livraisons")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Livraison {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "date_livraison")
     private LocalDate dateLivraison;
+
+    @Column(name = "adresse_depart")
     private String adresseDepart;
-    private  String adresseDestination;
-    @ManyToOne
+
+    @Column(name = "adresse_destination")
+    private String adresseDestination;
+
+    @Enumerated(EnumType.STRING)
+    private StatutLivraison statut = StatutLivraison.EN_ATTENTE;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vehicule_id")
+    private Vehicule vehicule;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chauffeur_id")
     private Chauffeur chauffeur;
-    @Enumerated(EnumType.STRING)
-    private StatusLivraison statusLivraison = StatusLivraison.ENATTENTE;
 }

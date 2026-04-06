@@ -2,47 +2,90 @@ package com.fleetflow.service;
 
 import com.fleetflow.dto.LivraisonRequestDTO;
 import com.fleetflow.dto.LivraisonResponseDTO;
-import com.fleetflow.entity.Livraison;
-import com.fleetflow.entity.StatusLivraison;
+import com.fleetflow.dto.LivraisonStatutRequestDTO;
+import com.fleetflow.entity.*;
 import com.fleetflow.mapper.LivraisonMapper;
+import com.fleetflow.repository.ChauffeurRepository;
+import com.fleetflow.repository.ClientRepo;
 import com.fleetflow.repository.LivraisonRepo;
+import com.fleetflow.repository.VehiculeRepo;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class LivraisonService {
-    private final LivraisonMapper livraisonMapper;
-    private  final LivraisonRepo livraisonRepo;
 
+    private final LivraisonRepo repo;
+    private final LivraisonMapper mapper;
+    private final ClientRepo clientRepo;
+    private final VehiculeRepo vehiculeRepo;
+    private final ChauffeurRepository chauffeurRepo;
 
-    public LivraisonRequestDTO createLivraison(LivraisonRequestDTO livraisondto){
-        Livraison createLivraison=livraisonMapper.toEntity(livraisondto);
-        if(createLivraison.getStatusLivraison()== null){
-            createLivraison.setStatusLivraison(StatusLivraison.ENATTENTE);
+    @Transactional
+    public LivraisonResponseDTO createLivraison(LivraisonRequestDTO livraisondto){
+        Livraison createLivraison=mapper.toEntity(livraisondto);
+        if (livraisondto.getClientId() != null) {
+            Client client = clientRepo.findById(livraisondto.getClientId())
+                    .orElseThrow(() -> new RuntimeException("Client introuvable avec l'ID : " + livraisondto.getClientId()));
+            createLivraison.setClient(client);
         }
-        Livraison saveLivraison =livraisonRepo.save(createLivraison);
-        return  livraisonMapper.toDto(saveLivraison);
+        if(createLivraison.getStatut()== null){
+            createLivraison.setStatut(StatutLivraison.EN_ATTENTE);
+        }
+        Livraison saveLivraison =repo.save(createLivraison);
+        return  mapper.toResponseDto(saveLivraison);
     }
 
-    public LivraisonRequestDTO assignerChauffeurEtVehicule(Long livraisonId, Long chauffeurId, Long vehiculeId) {
-        Livraison livraison = livraisonRepo.findById(livraisonId).orElseThrow(() -> new RuntimeException("Livraison n'est pas trouvée"));
-        livraison.setStatusLivraison(StatusLivraison.ENCOURS);
-        return livraisonMapper.toDto(livraisonRepo.save(livraison));
+    @Transactional
+    public LivraisonResponseDTO modifierStatut(Long id, LivraisonStatutRequestDTO dto) {
+        Livraison livraison = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Livraison non trouvee"));
+
+        mapper.updateStatutFromDto(dto, livraison);
+        Livraison updatedLivraison = repo.save(livraison);
+        return mapper.toResponseDto(updatedLivraison);
     }
 
-  public List<LivraisonResponseDTO> getAllLivraison(){
-     List<Livraison> livraisons = livraisonRepo.findAll();
-     //return livraisons.stream().map(livraisonMapper::toDto).toList();
-     return livraisonMapper.toDto(livraisons);
-  }
+    @Transactional
+    public List<LivraisonResponseDTO> getAllLivraison(){
+        List<Livraison> livraisons = repo.findAll();
+        //return livraisons.stream().map(livraisonMapper::toDto).toList();
+        return mapper.toResponseDtoList(livraisons);
+    }
 
-  public List<LivraisonResponseDTO> getBewteenTwoDates(LocalDate start ,LocalDate end){
-        List<Livraison> livraisons = livraisonRepo.findByDateLivraisonBetween(start,end);
-        return livraisonMapper.toDto(livraisons);
-  }
+    public List<LivraisonResponseDTO> findByStatut(StatutLivraison statut) {
+        return mapper.toResponseDtoList(repo.findByStatut(statut));
+    }
 
+    public List<LivraisonResponseDTO> findByClientId(Long clientId) {
+        return mapper.toResponseDtoList(repo.findByClientId(clientId));
+    }
+
+    public LivraisonResponseDTO assignerChauffeurEtVehicule(Long livraisonId, Long chauffeurId, Long vehiculeId) {
+        Livraison livraison = repo.findById(livraisonId).orElseThrow(() -> new RuntimeException("Livraison n'est pas trouvée"));
+        Chauffeur chauffeur = chauffeurRepo.findById(chauffeurId).orElseThrow(() -> new RuntimeException("Chauffeur introuvable"));
+        Vehicule vehicule = vehiculeRepo.findById(vehiculeId).orElseThrow(() -> new RuntimeException("Véhicule introuvable"));
+        livraison.setVehicule(vehicule);
+        livraison.setChauffeur(chauffeur);
+        livraison.setStatut(StatutLivraison.EN_COURS);
+        return mapper.toResponseDto(repo.save(livraison));
+    }
+
+    public List<LivraisonResponseDTO> getBewteenTwoDates(LocalDate start , LocalDate end){
+        List<Livraison> livraisons = repo.findByDateLivraisonBetween(start,end);
+        return mapper.toResponseDtoList(livraisons);
+    }
+
+    public List<LivraisonResponseDTO> listerLivraisonsParVilleDestination(String ville) {
+        return repo.findLivraisonsParVilleDestination(ville).stream()
+                .map(mapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
 }
