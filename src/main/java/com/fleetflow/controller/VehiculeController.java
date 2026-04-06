@@ -4,6 +4,7 @@ import com.fleetflow.dto.VehiculeResponseDTO;
 import com.fleetflow.entity.StatutVehicule;
 import com.fleetflow.service.VehiculeService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +19,13 @@ public class VehiculeController {
 
     @PostMapping
     @Operation(summary = "Ajouter un vehicule")
-    public VehiculeResponseDTO ajouter(@RequestBody VehiculeRequestDTO dto) {
+    public VehiculeResponseDTO ajouter(@Valid @RequestBody VehiculeRequestDTO dto) {
         return service.ajouterVehicule(dto);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Modifier un vehicule")
-    public VehiculeResponseDTO modifier(@PathVariable Long id, @RequestBody VehiculeRequestDTO dto) {
+    public VehiculeResponseDTO modifier(@PathVariable Long id, @Valid @RequestBody VehiculeRequestDTO dto) {
         return service.modifier(id, dto);
     }
 

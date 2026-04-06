@@ -7,11 +7,11 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: fleetflow_db
-      MYSQL_ROOT_PASSWORD: amalbasbas123456
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root" ]
       interval: 10s
       timeout: 20s
       retries: 10
@@ -28,7 +28,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/fleetflow_db?createDatabaseIfNotExist=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: amalbasbas123456
+      SPRING_DATASOURCE_PASSWORD: ""
 
 volumes:
   mysql_data:

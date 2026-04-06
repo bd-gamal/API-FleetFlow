@@ -4,6 +4,7 @@ import com.fleetflow.dto.ClientRequestDTO;
 import com.fleetflow.dto.ClientResponseDTO;
 import com.fleetflow.dto.Clientdto;
 import com.fleetflow.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,13 @@ public class ClientController {
     private  final ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<ClientResponseDTO> createClient(@RequestBody ClientRequestDTO client){
-        ClientResponseDTO createClient= clientService.addClient(client);
-        return  ResponseEntity.ok(createClient);
+    public ResponseEntity<ClientRequestDTO> createClient(@Valid @RequestBody ClientRequestDTO client){
+        ClientResponseDTO create= clientService.addClient(client);
+        return  ResponseEntity.ok(client);
     }
 
     @PutMapping("{id}")
-    public  ResponseEntity<ClientResponseDTO> updateClient(@PathVariable Long id, @RequestBody ClientRequestDTO client){
+    public  ResponseEntity<ClientResponseDTO> updateClient(@PathVariable Long id, @Valid @RequestBody ClientRequestDTO client){
         ClientResponseDTO updateClient= clientService.updateClient(id,client);
         return  ResponseEntity.ok(updateClient);
     }
