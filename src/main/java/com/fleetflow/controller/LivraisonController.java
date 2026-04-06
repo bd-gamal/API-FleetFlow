@@ -21,7 +21,7 @@ public class LivraisonController {
     private final LivraisonService service;
 
     @PostMapping
-    public ResponseEntity<LivraisonResponseDTO> createLivraion(@RequestBody LivraisonRequestDTO livraisonRequestDTO){
+    public ResponseEntity<LivraisonResponseDTO> createLivraison(@RequestBody LivraisonRequestDTO livraisonRequestDTO){
         LivraisonResponseDTO livraison = service.createLivraison(livraisonRequestDTO);
         return ResponseEntity.ok(livraison);
     }
