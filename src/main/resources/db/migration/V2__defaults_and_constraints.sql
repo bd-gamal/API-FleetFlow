@@ -1,34 +1,34 @@
 -- DEFAULT VALUES
 
-ALTER TABLE vehicules
+ALTER TABLE vehicule
     MODIFY statut ENUM('DISPONIBLE', 'EN_LIVRAISON', 'MAINTENANCE')
     NOT NULL DEFAULT 'DISPONIBLE';
 
-ALTER TABLE chauffeurs
+ALTER TABLE chauffeur
     MODIFY disponible BOOLEAN DEFAULT TRUE;
 
-ALTER TABLE livraisons
+ALTER TABLE livraison
     MODIFY statut ENUM('EN_ATTENTE', 'EN_COURS', 'LIVREE')
     NOT NULL DEFAULT 'EN_ATTENTE';
 
 
 -- FOREIGN KEYS
 
-ALTER TABLE livraisons
+ALTER TABLE livraison
     ADD CONSTRAINT fk_livraison_client
-        FOREIGN KEY (clients_id) REFERENCES clients(id);
+        FOREIGN KEY (client_id) REFERENCES client(id);
 
-ALTER TABLE livraisons
+ALTER TABLE livraison
     ADD CONSTRAINT fk_livraison_vehicule
-        FOREIGN KEY (vehicules_id) REFERENCES vehicules(id);
+        FOREIGN KEY (vehicule_id) REFERENCES vehicule(id);
 
-ALTER TABLE livraisons
+ALTER TABLE livraison
     ADD CONSTRAINT fk_livraison_chauffeur
-        FOREIGN KEY (chauffeurs_id) REFERENCES chauffeurs(id);
+        FOREIGN KEY (chauffeur_id) REFERENCES chauffeur(id);
 
 
 -- CONSTRAINT DE COHÉRENCE
 
-ALTER TABLE vehicules
+ALTER TABLE vehicule
     ADD CONSTRAINT chk_capacite_positive
         CHECK (capacite > 0);
