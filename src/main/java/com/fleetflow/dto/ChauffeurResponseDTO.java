@@ -9,4 +9,5 @@ public class ChauffeurResponseDTO {
     private String telephone;
     private String permisType;
     private boolean disponible;
+    private long total;
 }

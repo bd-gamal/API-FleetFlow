@@ -5,6 +5,7 @@ import com.fleetflow.dto.ChauffeurResponseDTO;
 import com.fleetflow.entity.Chauffeur;
 import com.fleetflow.mapper.ChauffeurMapper;
 import com.fleetflow.repository.ChauffeurRepository;
+import com.fleetflow.repository.LivraisonRepo;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class ChauffeurService {
 
     private final ChauffeurRepository chauffeurRepository;
     private final ChauffeurMapper chauffeurMapper;
+    private final LivraisonRepo livraisonRepo;
+
 
     @Transactional
     public ChauffeurResponseDTO ajouterChauffeur(ChauffeurRequestDTO requestDTO) {
@@ -45,9 +48,17 @@ public class ChauffeurService {
     }
 
     public List<ChauffeurResponseDTO> listerChauffeursDisponibles() {
-        return chauffeurRepository.findByDisponibleTrue().stream()
-                .map(chauffeurMapper::toDto)
+        return
+                chauffeurRepository.findByDisponibleTrue().stream()
+                .map( (chauffeur ) -> {
+                    ChauffeurResponseDTO dto = chauffeurMapper.toDto(chauffeur);
+                    dto.setTotal(livraisonRepo.totalLivraisonsByChauffeur(chauffeur.getId()));
+                            return dto;
+                        }
+                )
                 .collect(Collectors.toList());
+
+
     }
 
     public List<ChauffeurResponseDTO> listerTousLesChauffeurs() {
