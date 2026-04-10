@@ -1,6 +1,4 @@
 package com.fleetflow.dto;
-
-import com.fleetflow.entity.StatutLivraison;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
