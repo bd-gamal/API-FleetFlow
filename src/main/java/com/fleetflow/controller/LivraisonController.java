@@ -6,6 +6,7 @@ import com.fleetflow.dto.LivraisonStatutRequestDTO;
 import com.fleetflow.entity.StatutLivraison;
 import com.fleetflow.service.LivraisonService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class LivraisonController {
     private final LivraisonService service;
 
     @PostMapping
-    public ResponseEntity<LivraisonResponseDTO> createLivraion(@RequestBody LivraisonRequestDTO livraisonRequestDTO){
+    public ResponseEntity<LivraisonResponseDTO> createLivraison(@Valid @RequestBody LivraisonRequestDTO livraisonRequestDTO){
         LivraisonResponseDTO livraison = service.createLivraison(livraisonRequestDTO);
         return ResponseEntity.ok(livraison);
     }
@@ -29,8 +30,8 @@ public class LivraisonController {
     @PutMapping("/{id}/assigner")
     public ResponseEntity<LivraisonResponseDTO> assignerRessources(
             @PathVariable Long id,
-            @RequestParam Long chauffeurId,
-            @RequestParam Long vehiculeId) {
+            @Valid @RequestParam Long chauffeurId,
+            @Valid @RequestParam Long vehiculeId) {
         return ResponseEntity.ok(service.assignerChauffeurEtVehicule(id, chauffeurId, vehiculeId));
     }
 
@@ -42,7 +43,7 @@ public class LivraisonController {
 
     @PutMapping("/{id}/statut")
     @Operation(summary = "Modifier le statut d'une livraison")
-    public LivraisonResponseDTO modifierStatut(@PathVariable Long id, @RequestBody LivraisonStatutRequestDTO dto) {
+    public LivraisonResponseDTO modifierStatut(@PathVariable Long id, @Valid @RequestBody LivraisonStatutRequestDTO dto) {
         return service.modifierStatut(id, dto);
     }
 

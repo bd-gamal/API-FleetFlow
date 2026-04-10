@@ -6,18 +6,16 @@ import com.fleetflow.entity.Client;
 import com.fleetflow.mapper.ClientMapper;
 import com.fleetflow.repository.ClientRepo;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClientService {
     private final ClientRepo clientRepo;
     private  final ClientMapper clientMapper;
-    public ClientService(ClientRepo clientRepo, ClientMapper clientMapper){
-        this.clientRepo=clientRepo;
-        this.clientMapper =clientMapper;
-    }
 
      public ClientResponseDTO addClient(ClientRequestDTO client){
         Client addClient = clientMapper.toEntity(client);
@@ -30,7 +28,7 @@ public class ClientService {
          Client clientUpdated = clientRepo.save(findClient);
          return  clientMapper.toDTO(clientUpdated);
      }
-    public ClientResponseDTO findById(Long id){
+    public  ClientResponseDTO findById(Long id){
         return  clientRepo.findById(id).map(c->clientMapper.toDTO(c)).orElseThrow(()->new EntityNotFoundException("not found"));
     }
     public  void deleteClient( Long id){
