@@ -1,7 +1,7 @@
 package com.fleetflow.dto;
 
 import com.fleetflow.entity.StatutLivraison;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LivraisonStatutRequestDTO {
-    @NotBlank(message = "Le statut de livraison est obligatoire")
+    @NotNull(message = "Le statut de livraison est obligatoire")
     private StatutLivraison statut;
 }
