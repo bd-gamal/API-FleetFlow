@@ -16,8 +16,10 @@ import com.fleetflow.repository.VehiculeRepo;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,29 +33,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class LivraisonServiceTest {
-
-    @Autowired
-    private LivraisonService livraisonService;
-
-    // On injecte le VRAI mapper (il effectuera les vraies conversions DTO <-> Entité)
-    @Autowired
-    private LivraisonMapper livraisonMapper;
-
-    // On utilise @MockBean pour simuler les accès à la base de données
-    @MockBean
+    @Mock
     private LivraisonRepo livraisonRepo;
-
-    @MockBean
-    private ChauffeurRepository chauffeurRepository;
-
-    @MockBean
-    private VehiculeRepo vehiculeRepo;
-
-    @MockBean
+    @Spy
+    private LivraisonMapper livraisonMapper = Mappers.getMapper(LivraisonMapper.class);
+    @Mock
     private ClientRepo clientRepo;
+    @Mock
+    private VehiculeRepo vehiculeRepo;
+    @Mock
+    private ChauffeurRepository chauffeurRepo;
 
+    @InjectMocks
+    private LivraisonService livraisonService;
     @Test
     void createLivraisonTest(){
         Livraison livraison = new Livraison();
@@ -79,7 +73,7 @@ public class LivraisonServiceTest {
         Vehicule vehicule = new Vehicule();
 
         when(livraisonRepo.findById(livraisonId)).thenReturn(Optional.of(livraison));
-        when(chauffeurRepository.findById(chauffeurId)).thenReturn(Optional.of(chauffeur));
+        when(chauffeurRepo.findById(chauffeurId)).thenReturn(Optional.of(chauffeur));
         when(vehiculeRepo.findById(vehiculeId)).thenReturn(Optional.of(vehicule));
         when(livraisonRepo.save(any(Livraison.class))).thenAnswer(i -> i.getArgument(0));
 
