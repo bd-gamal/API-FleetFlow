@@ -48,17 +48,9 @@ public class ChauffeurService {
     }
 
     public List<ChauffeurResponseDTO> listerChauffeursDisponibles() {
-        return
-                chauffeurRepository.findByDisponibleTrue().stream()
-                .map( (chauffeur ) -> {
-                    ChauffeurResponseDTO dto = chauffeurMapper.toDto(chauffeur);
-                    dto.setTotal(livraisonRepo.totalLivraisonsByChauffeur(chauffeur.getId()));
-                            return dto;
-                        }
-                )
-                .collect(Collectors.toList());
-
-
+        return chauffeurRepository.findByDisponibleTrue().stream()
+                        .map(chauffeurMapper::toDto)
+                        .collect(Collectors.toList());
     }
 
     public List<ChauffeurResponseDTO> listerTousLesChauffeurs() {

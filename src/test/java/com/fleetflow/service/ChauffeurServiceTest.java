@@ -4,7 +4,6 @@ import com.fleetflow.dto.ChauffeurResponseDTO;
 import com.fleetflow.entity.Chauffeur;
 import com.fleetflow.mapper.ChauffeurMapper;
 import com.fleetflow.repository.ChauffeurRepository;
-import com.fleetflow.repository.LivraisonRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

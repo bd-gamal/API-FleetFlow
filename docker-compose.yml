@@ -1,7 +1,9 @@
+version: "3.7"
+
 services:
   db:
     image: mysql:8.0
-    container_name: fleetflow-db
+    container_name: fleetflow_db_compose
     restart: unless-stopped
     ports:
       - "3306:3306"
@@ -18,7 +20,7 @@ services:
 
   app:
     build: .
-    container_name: fleetflow-app
+    container_name: fleetflow_app_compose
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -29,6 +31,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/fleetflow_db?createDatabaseIfNotExist=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
+
+networks:
+  app_network:
 
 volumes:
   mysql_data:
