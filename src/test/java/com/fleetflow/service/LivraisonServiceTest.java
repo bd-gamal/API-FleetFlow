@@ -1,6 +1,5 @@
 package com.fleetflow.service;
 
-import com.fleetflow.dto.ClientRequestDTO;
 import com.fleetflow.dto.LivraisonRequestDTO;
 import com.fleetflow.dto.LivraisonResponseDTO;
 import com.fleetflow.dto.LivraisonStatutRequestDTO;
@@ -13,7 +12,6 @@ import com.fleetflow.repository.ChauffeurRepository;
 import com.fleetflow.repository.ClientRepo;
 import com.fleetflow.repository.LivraisonRepo;
 import com.fleetflow.repository.VehiculeRepo;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
@@ -21,9 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
