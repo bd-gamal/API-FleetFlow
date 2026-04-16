@@ -1,4 +1,5 @@
 FleetFlow API
+
 📝 Description
 FleetFlow API est une solution RESTful conçue pour optimiser et automatiser la planification ainsi que la gestion de la logistique de livraison. Ce projet met l'accent sur une architecture propre, la maintenabilité et la facilité de déploiement.
 
@@ -52,11 +53,6 @@ docker compose down
 Une fois l'application démarrée, vous pouvez accéder à la documentation interactive et tester les différents endpoints via l'URL suivante :
 
 👉 http://localhost:8080/swagger-ui.html
-
-Tests Automatisés
-Le projet inclut une suite de tests unitaires et d'intégration utilisant JUnit 5 et une base de données H2 en mémoire.
-
-./mvnw test
 
 🏗 Structure du Projet
 Le code est organisé selon les standards Spring Boot :
