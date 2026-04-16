@@ -19,4 +19,5 @@ public class Client {
     private  String telephone;
     @OneToMany(mappedBy = "client")
     private List<Livraison> livrasionList;
+
 }

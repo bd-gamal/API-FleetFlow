@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "livraison")
@@ -38,4 +39,6 @@ public class Livraison {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chauffeur_id")
     private Chauffeur chauffeur;
+
+
 }
