@@ -32,3 +32,4 @@ ALTER TABLE livraison
 ALTER TABLE vehicule
     ADD CONSTRAINT chk_capacite_positive
         CHECK (capacite > 0);
+
