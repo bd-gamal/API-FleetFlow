@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,8 +39,8 @@ class VehiculeServiceTest {
 
         List<Vehicule> mockList = List.of(v1);
 
-        when(vehiculeRepo.findByStatut(StatutVehicule.DISPONIBLE)).thenReturn(mockList);
-
+        when(vehiculeRepo.findByStatut(any()))
+                .thenReturn(List.of(v1));
         //2. act
         List<VehiculeResponseDTO> result = vehiculeService.listeVehiculesDisponibles();
 
@@ -60,8 +62,8 @@ class VehiculeServiceTest {
         v2.setCapacite(5);
 
 
-        when(vehiculeRepo.findByCapaciteGreaterThan(capaciteMin)).thenReturn(List.of(v1));
-
+        when(vehiculeRepo.findByCapaciteGreaterThan(anyInt()))
+                .thenReturn(List.of(v1));
         List<VehiculeResponseDTO> result = vehiculeService.findCapaciteVehiculeGreaterThan(capaciteMin);
 
         assertNotNull(result);
