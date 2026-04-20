@@ -1,0 +1,7 @@
+name: CI Workflow
+
+on:
+  push:
+    branches: [ "client-test" ]
+  pull_request:
+    branches: [ "client-test" ]
