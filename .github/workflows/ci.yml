@@ -2,9 +2,9 @@ name: CI FleetFlow
 
 on:
   push:
-    branches: [ "client-test" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "client-test" ]
+    branches: [ "main" ]
 
 jobs:
   build-test:
