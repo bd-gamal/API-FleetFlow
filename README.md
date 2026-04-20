@@ -36,6 +36,7 @@ Validation : Spring Boot Starter Validation
 Documentation : SpringDoc OpenAPI v2.4.0
 
 🐳 Installation et Lancement avec Docker
+
 Ce projet est entièrement conteneurisé pour faciliter son exécution dans n'importe quel environnement.
 
 Prérequis
