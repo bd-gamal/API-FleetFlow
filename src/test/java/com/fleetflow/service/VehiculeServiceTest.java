@@ -3,26 +3,31 @@ package com.fleetflow.service;
 import com.fleetflow.dto.VehiculeResponseDTO;
 import com.fleetflow.entity.StatutVehicule;
 import com.fleetflow.entity.Vehicule;
+import com.fleetflow.mapper.VehiculeMapper;
 import com.fleetflow.repository.VehiculeRepo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class VehiculeServiceTest {
 
-
-    @Autowired
-    VehiculeService vehiculeService;
-    @MockBean
+    @Mock
     VehiculeRepo vehiculeRepo;
+
+    @Mock
+    VehiculeMapper mapper;
+
+    @InjectMocks
+    VehiculeService vehiculeService;
 
     @Test
     void listeVehiculesDisponibles(){
@@ -33,8 +38,11 @@ class VehiculeServiceTest {
 
         List<Vehicule> mockList = List.of(v1);
 
-        when(vehiculeRepo.findByStatut(StatutVehicule.DISPONIBLE)).thenReturn(mockList);
+        when(vehiculeRepo.findByStatut(any()))
+                .thenReturn(List.of(v1));
 
+        when(mapper.toResponseDtoList(anyList()))
+                .thenReturn(List.of(new VehiculeResponseDTO()));
         //2. act
         List<VehiculeResponseDTO> result = vehiculeService.listeVehiculesDisponibles();
 
@@ -46,23 +54,28 @@ class VehiculeServiceTest {
 
     @Test
     void findCapaciteVehiculeGreaterThan(){
-        int capaciteMin = 10;
 
+        int capaciteMin = 10;
 
         Vehicule v1 = new Vehicule();
         v1.setCapacite(15);
 
-        Vehicule v2 = new Vehicule();
-        v2.setCapacite(5);
+        VehiculeResponseDTO dto = new VehiculeResponseDTO();
+        dto.setCapacite(15);
 
+        when(vehiculeRepo.findByCapaciteGreaterThan(10))
+                .thenReturn(List.of(v1));
 
-        when(vehiculeRepo.findByCapaciteGreaterThan(capaciteMin)).thenReturn(List.of(v1));
+        when(mapper.toResponseDtoList(List.of(v1)))
+                .thenReturn(List.of(dto));
 
-        List<VehiculeResponseDTO> result = vehiculeService.findCapaciteVehiculeGreaterThan(capaciteMin);
+        List<VehiculeResponseDTO> result =
+                vehiculeService.findCapaciteVehiculeGreaterThan(capaciteMin);
 
         assertNotNull(result);
-        assertEquals(1,result.size(), "la liste doit contenir un seul élément");
-        assertTrue(result.getFirst().getCapacite()>capaciteMin, "capacité doit être > 10");
+        assertEquals(1, result.size());
+
+        assertTrue(result.get(0).getCapacite() > capaciteMin);
     }
 
 
