@@ -2,7 +2,7 @@ name: CI FleetFlow
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "vehicule_features" ]
   pull_request:
     branches: [ "main" ]
 
