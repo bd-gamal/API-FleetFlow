@@ -1,7 +1,35 @@
-name: CI Workflow
+name: CI FleetFlow
 
 on:
   push:
     branches: [ "client-test" ]
   pull_request:
     branches: [ "client-test" ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Cache Maven
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Build
+        run: mvn package -DskipTests
