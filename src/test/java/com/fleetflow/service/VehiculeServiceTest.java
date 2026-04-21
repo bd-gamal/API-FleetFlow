@@ -36,8 +36,6 @@ class VehiculeServiceTest {
         Vehicule v1 = new Vehicule();
         v1.setStatut(StatutVehicule.DISPONIBLE);
 
-        List<Vehicule> mockList = List.of(v1);
-
         when(vehiculeRepo.findByStatut(any()))
                 .thenReturn(List.of(v1));
 
