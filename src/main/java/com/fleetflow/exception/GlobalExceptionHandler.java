@@ -1,4 +1,4 @@
-package com.fleetflow.handler;
+package com.fleetflow.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
