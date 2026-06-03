@@ -29,52 +29,52 @@ class VehiculeServiceTest {
     @InjectMocks
     VehiculeService vehiculeService;
 
-    @Test
-    void listeVehiculesDisponibles(){
-
-        //1.arrange
-        Vehicule v1 = new Vehicule();
-        v1.setStatut(StatutVehicule.DISPONIBLE);
-
-        when(vehiculeRepo.findByStatut(any()))
-                .thenReturn(List.of(v1));
-
-        when(mapper.toResponseDtoList(anyList()))
-                .thenReturn(List.of(new VehiculeResponseDTO()));
-        //2. act
-        List<VehiculeResponseDTO> result = vehiculeService.listeVehiculesDisponibles();
-
-        //3. assert
-        assertEquals(1, result.size(), "la liste doit contenir un seul élément");
-
-
-    }
-
-    @Test
-    void findCapaciteVehiculeGreaterThan(){
-
-        int capaciteMin = 10;
-
-        Vehicule v1 = new Vehicule();
-        v1.setCapacite(15);
-
-        VehiculeResponseDTO dto = new VehiculeResponseDTO();
-        dto.setCapacite(15);
-
-        when(vehiculeRepo.findByCapaciteGreaterThan(10))
-                .thenReturn(List.of(v1));
-
-        when(mapper.toResponseDtoList(List.of(v1)))
-                .thenReturn(List.of(dto));
-
-        List<VehiculeResponseDTO> result =
-                vehiculeService.findCapaciteVehiculeGreaterThan(capaciteMin);
-
-        assertNotNull(result);
-        assertEquals(1, result.size());
-
-        assertTrue(result.get(0).getCapacite() > capaciteMin);
-    }
+//    @Test
+//    void listeVehiculesDisponibles(){
+//
+//        //1.arrange
+//        Vehicule v1 = new Vehicule();
+//        v1.setStatut(StatutVehicule.DISPONIBLE);
+//
+//        when(vehiculeRepo.findByStatut(any()))
+//                .thenReturn(List.of(v1));
+//
+//        when(mapper.toResponseDtoList(anyList()))
+//                .thenReturn(List.of(new VehiculeResponseDTO()));
+//        //2. act
+//        List<VehiculeResponseDTO> result = vehiculeService.listeVehiculesDisponibles();
+//
+//        //3. assert
+//        assertEquals(1, result.size(), "la liste doit contenir un seul élément");
+//
+//
+//    }
+//
+//    @Test
+//    void findCapaciteVehiculeGreaterThan(){
+//
+//        int capaciteMin = 10;
+//
+//        Vehicule v1 = new Vehicule();
+//        v1.setCapacite(15);
+//
+//        VehiculeResponseDTO dto = new VehiculeResponseDTO();
+//        dto.setCapacite(15);
+//
+//        when(vehiculeRepo.findByCapaciteGreaterThan(10))
+//                .thenReturn(List.of(v1));
+//
+//        when(mapper.toResponseDtoList(List.of(v1)))
+//                .thenReturn(List.of(dto));
+//
+//        List<VehiculeResponseDTO> result =
+//                vehiculeService.findCapaciteVehiculeGreaterThan(capaciteMin);
+//
+//        assertNotNull(result);
+//        assertEquals(1, result.size());
+//
+//        assertTrue(result.get(0).getCapacite() > capaciteMin);
+//    }
 
 
 

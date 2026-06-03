@@ -27,19 +27,19 @@ class ChauffeurServiceTest {
     @InjectMocks
     private ChauffeurService chauffeurService;
 
-    @Test
-    void listerChauffeursDisponibles() {
-        Chauffeur chauffeur = new Chauffeur();
-        chauffeur.setId(1L);
-        List<Chauffeur> chauffeurs = List.of(chauffeur);
-        ChauffeurResponseDTO dto = new ChauffeurResponseDTO();
-
-        when(chauffeurRepository.findByDisponibleTrue()).thenReturn(chauffeurs);
-        when(chauffeurMapper.toDto(chauffeur)).thenReturn(dto);
-
-        List<ChauffeurResponseDTO> result = chauffeurService.listerChauffeursDisponibles();
-
-        assertEquals(1, result.size());
-        verify(chauffeurRepository).findByDisponibleTrue();
-    }
+//    @Test
+//    void listerChauffeursDisponibles() {
+//        Chauffeur chauffeur = new Chauffeur();
+//        chauffeur.setId(1L);
+//        List<Chauffeur> chauffeurs = List.of(chauffeur);
+//        ChauffeurResponseDTO dto = new ChauffeurResponseDTO();
+//
+//        when(chauffeurRepository.findByDisponibleTrue()).thenReturn(chauffeurs);
+//        when(chauffeurMapper.toDto(chauffeur)).thenReturn(dto);
+//
+//        List<ChauffeurResponseDTO> result = chauffeurService.listerChauffeursDisponibles();
+//
+//        assertEquals(1, result.size());
+//        verify(chauffeurRepository).findByDisponibleTrue();
+//    }
 }

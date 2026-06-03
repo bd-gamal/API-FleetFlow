@@ -5,10 +5,11 @@ import com.fleetflow.dto.ClientResponseDTO;
 import com.fleetflow.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -40,8 +41,8 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientResponseDTO>> getAllCients(){
-        List<ClientResponseDTO> clients= clientService.getAllClient();
-        return  ResponseEntity.ok(clients);
+    public ResponseEntity<Page<ClientResponseDTO>> getAllClients(
+            @PageableDefault(size = 10, sort = "ville") Pageable pageable){
+        return ResponseEntity.ok(clientService.getAllClients(pageable));
     }
 }
