@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @EqualsAndHashCode(callSuper = true)
 @Data @NoArgsConstructor @AllArgsConstructor
+@SuperBuilder
 public class Chauffeur extends User {
 
     @Column(nullable = false)
