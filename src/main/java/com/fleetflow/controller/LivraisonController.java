@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -25,12 +26,14 @@ public class LivraisonController {
     private final LivraisonService service;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<LivraisonResponseDTO> createLivraison(@Valid @RequestBody LivraisonRequestDTO livraisonRequestDTO){
         LivraisonResponseDTO livraison = service.createLivraison(livraisonRequestDTO);
         return ResponseEntity.ok(livraison);
     }
 
     @PutMapping("/{id}/assigner")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<LivraisonResponseDTO> assignerRessources(
             @PathVariable Long id,
             @Valid @RequestParam Long chauffeurId,
@@ -39,18 +42,23 @@ public class LivraisonController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Page<LivraisonResponseDTO>> getAllLivraison(
             @PageableDefault(size = 10, sort = "adresseDepart")Pageable pageable){
         return ResponseEntity.ok(service.getAllLivraisons(pageable));
     }
 
     @PutMapping("/{id}/statut")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'CHAUFFEUR')")
     @Operation(summary = "Modifier le statut d'une livraison")
-    public LivraisonResponseDTO modifierStatut(@PathVariable Long id, @Valid @RequestBody LivraisonStatutRequestDTO dto) {
+    public LivraisonResponseDTO modifierStatut(
+            @PathVariable Long id,
+            @Valid @RequestBody LivraisonStatutRequestDTO dto) {
         return service.modifierStatut(id, dto);
     }
 
     @GetMapping("/statut/{statut}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @Operation(summary = "Trouver les livraisons par statut")
     public ResponseEntity<Page<LivraisonResponseDTO>> findByStatut(
             @PathVariable StatutLivraison statut,
@@ -59,6 +67,7 @@ public class LivraisonController {
     }
 
     @GetMapping("/client/{clientId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @Operation(summary = "Trouver les livraisons par client")
     public ResponseEntity<Page<LivraisonResponseDTO>> findByClientId(
             @PathVariable Long clientId,
@@ -67,6 +76,7 @@ public class LivraisonController {
     }
 
     @GetMapping("/between-dates")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Page<LivraisonResponseDTO>> getBetweenTwoDates(
             @RequestParam LocalDate start,
             @RequestParam LocalDate end,
@@ -75,6 +85,7 @@ public class LivraisonController {
     }
 
     @GetMapping("/recherche/ville")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Page<LivraisonResponseDTO>> listerLivraisonsParVille(
             @RequestParam String ville,
             @PageableDefault(size = 10) Pageable pageable) {
