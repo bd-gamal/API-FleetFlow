@@ -1,14 +1,11 @@
-ALTER TABLE client DROP COLUMN email;
-ALTER TABLE client DROP CONSTRAINT client_pkey CASCADE;
-ALTER TABLE client DROP COLUMN id;
+ALTER TABLE livraison DROP FOREIGN KEY fk_livraison_client;
+ALTER TABLE livraison DROP FOREIGN KEY fk_livraison_chauffeur;
 
-ALTER TABLE client ADD COLUMN id BIGINT PRIMARY KEY;
+ALTER TABLE client DROP COLUMN email;
+ALTER TABLE client MODIFY id BIGINT;
 ALTER TABLE client ADD CONSTRAINT fk_client_user FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE;
 
-ALTER TABLE chauffeur DROP CONSTRAINT chauffeur_pkey CASCADE;
-ALTER TABLE chauffeur DROP COLUMN id;
-
-ALTER TABLE chauffeur ADD COLUMN id BIGINT PRIMARY KEY;
+ALTER TABLE chauffeur MODIFY id BIGINT;
 ALTER TABLE chauffeur ADD CONSTRAINT fk_chauffeur_user FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE;
 
 ALTER TABLE livraison ADD CONSTRAINT fk_livraison_client FOREIGN KEY (client_id) REFERENCES client(id);
