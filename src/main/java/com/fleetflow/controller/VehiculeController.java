@@ -6,8 +6,16 @@ import com.fleetflow.service.VehiculeService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Synthesizer;
 import java.util.List;
 
 @RestController
@@ -15,41 +23,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VehiculeController {
 
-    private final VehiculeService service;
+    private final VehiculeService vehiculeService;
 
     @PostMapping
-    @Operation(summary = "Ajouter un vehicule")
-    public VehiculeResponseDTO ajouter(@Valid @RequestBody VehiculeRequestDTO dto) {
-        return service.ajouterVehicule(dto);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<VehiculeResponseDTO> ajouterVehicule(@RequestBody VehiculeRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(vehiculeService.ajouterVehicule(dto));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Modifier un vehicule")
-    public VehiculeResponseDTO modifier(@PathVariable Long id, @Valid @RequestBody VehiculeRequestDTO dto) {
-        return service.modifier(id, dto);
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Supprimer un vehicule")
-    public void supprimerVehicule(@PathVariable Long id) {
-        service.supprimerVehiculeById(id);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<VehiculeResponseDTO> modifierVehicule(@PathVariable Long id, @RequestBody VehiculeRequestDTO dto) {
+        return ResponseEntity.ok(vehiculeService.modifier(id, dto));
     }
 
     @GetMapping("/disponibles")
-    @Operation(summary = "Lister les vehicules disponibles")
-    public List<VehiculeResponseDTO> listerDisponibles() {
-        return service.listeVehiculesDisponibles();
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Page<VehiculeResponseDTO>> listerVehiculesDisponibles(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(vehiculeService.listeVehiculesDisponibles(pageable));
     }
 
     @GetMapping("/statut/{statut}")
-    @Operation(summary = "Trouver les vehicules par statut")
-    public List<VehiculeResponseDTO> getVehiculeByStatut(@PathVariable StatutVehicule statut) {
-        return service.findVehiculeByStatut(statut);
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Page<VehiculeResponseDTO>> listerVehiculesParStatut(
+            @PathVariable StatutVehicule statut,
+            @PageableDefault(size = 10)Pageable pageable) {
+        return ResponseEntity.ok(vehiculeService.findVehiculeByStatut(statut, pageable));
     }
 
-    @GetMapping("/capacite/{capacite}")
-    @Operation(summary = "Trouver les vehicules avec capacite superieure")
-    public List<VehiculeResponseDTO> getVehiculeByCapacite(@PathVariable int capacite) {
-        return service.findCapaciteVehiculeGreaterThan(capacite);
+    @GetMapping("/capacite")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<Page<VehiculeResponseDTO>> listerVehiculesParCapacite(
+            @RequestParam int minimum,
+            @PageableDefault(size = 10, direction = Sort.Direction.ASC)Pageable pageable) {
+        return ResponseEntity.ok(vehiculeService.findCapaciteVehiculeGreaterThan(minimum, pageable));
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> supprimerVehicule(@PathVariable Long id) {
+        vehiculeService.supprimerVehiculeById(id);
+        return ResponseEntity.noContent().build();
     }
 }
